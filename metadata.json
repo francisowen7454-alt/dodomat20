@@ -1,0 +1,6 @@
+{
+  "name": "T20 Server",
+  "description": "Business Operations, Sales, Inventory & Reporting Management System for Staff Workspace and Manager Dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
