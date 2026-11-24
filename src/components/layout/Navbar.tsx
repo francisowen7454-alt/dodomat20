@@ -5,7 +5,6 @@ import { useTheme } from '../../context/ThemeContext';
 import {
   LogOut,
   User as UserIcon,
-  Shield,
   Briefcase,
   Settings,
   KeyRound,
@@ -22,8 +21,8 @@ import { PWAInstallButton } from '../shared/PWAInstallButton';
 import { GlobalSearchModal } from '../shared/GlobalSearchModal';
 
 interface NavbarProps {
-  currentView: 'landing' | 'staff' | 'manager';
-  onNavigate: (view: 'landing' | 'staff' | 'manager') => void;
+  currentView: 'landing' | 'staff';
+  onNavigate: (view: 'landing' | 'staff') => void;
   onOpenAuth: (mode?: 'login' | 'register') => void;
 }
 
@@ -47,7 +46,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate, onOpenA
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const handleMobileNav = (view: 'landing' | 'staff' | 'manager') => {
+  const handleMobileNav = (view: 'landing' | 'staff') => {
     onNavigate(view);
     setMobileMenuOpen(false);
   };
@@ -100,19 +99,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate, onOpenA
                 Home
               </button>
 
-              {currentUser?.role === 'manager' && (
-                <button
-                  onClick={() => onNavigate('manager')}
-                  className={`whitespace-nowrap shrink-0 transition-colors hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5 cursor-pointer ${
-                    currentView === 'manager' ? 'text-slate-900 dark:text-white font-bold underline decoration-2 underline-offset-8' : ''
-                  }`}
-                >
-                  <Shield className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                  <span>Manager Portal</span>
-                </button>
-              )}
-
-              {currentUser?.role === 'staff' && (
+              {currentUser && (
                 <button
                   onClick={() => onNavigate('staff')}
                   className={`whitespace-nowrap shrink-0 transition-colors hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5 cursor-pointer ${
@@ -149,7 +136,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate, onOpenA
               <div className="flex items-center gap-1.5 sm:gap-2">
                 {/* In-App Stock Notification Bell */}
                 <NotificationCenter
-                  onNavigateToInventory={() => onNavigate(currentUser.role === 'manager' ? 'manager' : 'staff')}
+                  onNavigateToInventory={() => onNavigate('staff')}
                 />
 
                 {/* User Info - Prominently visible across mobile & desktop */}
@@ -166,30 +153,20 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate, onOpenA
                       {currentUser.fullName || currentUser.username}
                     </span>
                     <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono truncate">
-                      @{currentUser.username} · {currentUser.role === 'manager' ? 'Manager' : 'Staff'}
+                      @{currentUser.username} · Staff
                     </span>
                   </div>
                   <Settings className="w-3.5 h-3.5 text-slate-400 ml-0.5 sm:ml-1 shrink-0 hidden sm:block" />
                 </button>
 
                 {/* Direct Portal Indicator */}
-                {currentUser.role === 'manager' ? (
-                  <button
-                    onClick={() => onNavigate('manager')}
-                    className="hidden lg:inline-flex px-3 py-1.5 text-xs font-semibold bg-slate-900 dark:bg-emerald-600 text-white rounded-lg hover:bg-slate-800 dark:hover:bg-emerald-700 transition-colors whitespace-nowrap shrink-0 items-center gap-1.5 cursor-pointer shadow-2xs"
-                  >
-                    <Shield className="w-3.5 h-3.5 text-emerald-400 dark:text-white" />
-                    <span>Manager Portal</span>
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => onNavigate('staff')}
-                    className="hidden lg:inline-flex px-3 py-1.5 text-xs font-semibold bg-blue-600 dark:bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors whitespace-nowrap shrink-0 items-center gap-1.5 cursor-pointer shadow-2xs"
-                  >
-                    <Briefcase className="w-3.5 h-3.5 text-white" />
-                    <span>Staff Workspace</span>
-                  </button>
-                )}
+                <button
+                  onClick={() => onNavigate('staff')}
+                  className="hidden lg:inline-flex px-3 py-1.5 text-xs font-semibold bg-blue-600 dark:bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors whitespace-nowrap shrink-0 items-center gap-1.5 cursor-pointer shadow-2xs"
+                >
+                  <Briefcase className="w-3.5 h-3.5 text-white" />
+                  <span>Staff Workspace</span>
+                </button>
 
                 {/* Mobile direct profile button */}
                 <button
@@ -340,7 +317,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate, onOpenA
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
 
-              {currentUser?.role === 'staff' && (
+              {currentUser && (
                 <button
                   onClick={() => handleMobileNav('staff')}
                   className={`w-full text-left px-3 py-2.5 text-xs font-semibold rounded-lg flex items-center justify-between transition-colors min-h-[42px] cursor-pointer ${
@@ -352,23 +329,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate, onOpenA
                   <span className="flex items-center gap-2">
                     <Briefcase className="w-4 h-4" />
                     <span>Staff Operations Workspace</span>
-                  </span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              )}
-
-              {currentUser?.role === 'manager' && (
-                <button
-                  onClick={() => handleMobileNav('manager')}
-                  className={`w-full text-left px-3 py-2.5 text-xs font-semibold rounded-lg flex items-center justify-between transition-colors min-h-[42px] cursor-pointer ${
-                    currentView === 'manager'
-                      ? 'bg-slate-900 dark:bg-emerald-600 text-white'
-                      : 'text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800'
-                  }`}
-                >
-                  <span className="flex items-center gap-2">
-                    <Shield className="w-4 h-4 text-emerald-500" />
-                    <span>Manager Portal & Audit Center</span>
                   </span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>

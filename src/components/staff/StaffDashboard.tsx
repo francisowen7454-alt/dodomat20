@@ -27,7 +27,6 @@ import {
   FileCheck,
   UserCheck,
   KeyRound,
-  Shield,
   HelpCircle,
   Check,
   AlertTriangle,
@@ -60,22 +59,6 @@ type StaffTab =
 
 export const StaffDashboard: React.FC = () => {
   const { currentUser, updateProfile } = useAuth();
-
-  if (currentUser?.role === 'manager') {
-    return (
-      <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-        <div className="bg-white p-8 rounded-2xl border border-red-200 max-w-md w-full text-center space-y-4 shadow-xl">
-          <div className="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto">
-            <Shield className="w-6 h-6" />
-          </div>
-          <h2 className="text-lg font-bold text-slate-900">Access Restricted (Manager Role)</h2>
-          <p className="text-xs text-slate-600 leading-relaxed">
-            Managers are restricted from entering the Staff Workspace. Your account has executive audit authority via the <strong>Manager Dashboard</strong>.
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   const [activeTab, setActiveTab] = useState<StaffTab>('product-catalog');
 

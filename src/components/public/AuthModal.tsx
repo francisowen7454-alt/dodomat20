@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { UserRole } from '../../types';
 import {
   X,
   Lock,
   User,
-  ShieldCheck,
   CheckCircle2,
   AlertCircle,
-  Briefcase,
   HelpCircle,
   Eye,
   EyeOff,
@@ -18,7 +15,7 @@ interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   initialMode?: 'login' | 'register';
-  onSuccessNavigate?: (role: 'manager' | 'staff') => void;
+  onSuccessNavigate?: (role: 'staff') => void;
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({
@@ -28,7 +25,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   onSuccessNavigate,
 }) => {
   const [mode, setMode] = useState<'login' | 'register'>(initialMode);
-  const [selectedRole, setSelectedRole] = useState<UserRole>('staff');
   const { login, registerUser } = useAuth();
 
   // Login form
@@ -69,7 +65,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     if (result.success) {
       onClose();
       if (onSuccessNavigate) {
-        onSuccessNavigate(loginInput.toLowerCase().includes('manager') ? 'manager' : 'staff');
+        onSuccessNavigate('staff');
       }
     } else {
       setErrorMessage(result.error || 'Login failed. Please verify credentials.');
@@ -100,17 +96,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       fullName,
       username: regUsername,
       password: regPassword,
-      role: selectedRole,
+      role: 'staff',
     });
     setIsSubmitting(false);
 
     if (res.success) {
       setSuccessNotice(
-        `Account successfully registered as ${selectedRole === 'manager' ? 'Executive Manager' : 'Operations Staff'}. Credentials securely saved. Signing you in...`
+        'Account successfully registered. Credentials securely saved. Signing you in...'
       );
       setTimeout(() => {
         onClose();
-        if (onSuccessNavigate) onSuccessNavigate(selectedRole);
+        if (onSuccessNavigate) onSuccessNavigate('staff');
       }, 1000);
     } else {
       setErrorMessage(res.error || 'Registration failed.');
@@ -150,9 +146,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <span>T20 Operational Workflow:</span>
           </div>
           <p className="text-slate-600 leading-relaxed text-[11px]">
-            1. <strong>Product Registration:</strong> Register products with Photo, Name, and Price (no quantity field).<br />
+            1. <strong>Product Registration:</strong> Register products with Photo, Name, and Price.<br />
             2. <strong>Daily Report Entry:</strong> Products auto-populate, where quantity sold is filled alongside Quantum & Body Analyzer diagnostics and Member Kits.<br />
-            3. <strong>Reports Audit:</strong> Manager receives submissions and provides managerial audit remarks.
+            3. <strong>Automated Reports:</strong> Weekly, Monthly, Quarterly, and Annual statements compile automatically with profit and expense reconciliation.
           </p>
         </div>
 
@@ -246,46 +242,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </form>
           ) : (
             <form onSubmit={handleRegisterSubmit} className="space-y-4">
-              {/* Role Selection */}
-              <div>
-                <label className="block text-sm font-black text-slate-900 mb-2">
-                  Select Account Role to Register:
-                </label>
-                <div className="grid grid-cols-2 gap-2.5">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedRole('staff')}
-                    className={`p-3 rounded-xl border-2 text-left flex items-start gap-2.5 transition-all min-h-[62px] cursor-pointer ${
-                      selectedRole === 'staff'
-                        ? 'border-blue-600 bg-blue-50/90 text-blue-950 ring-2 ring-blue-600/30'
-                        : 'border-slate-300 bg-white text-slate-800 hover:bg-slate-50'
-                    }`}
-                  >
-                    <Briefcase className={`w-4 h-4 mt-1 shrink-0 ${selectedRole === 'staff' ? 'text-blue-700' : 'text-slate-500'}`} />
-                    <div>
-                      <div className="text-sm font-black text-slate-900">Register as Staff</div>
-                      <div className="text-xs font-semibold text-slate-600 mt-0.5">Fill daily reports, products & testing</div>
-                    </div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setSelectedRole('manager')}
-                    className={`p-3 rounded-xl border-2 text-left flex items-start gap-2.5 transition-all min-h-[62px] cursor-pointer ${
-                      selectedRole === 'manager'
-                        ? 'border-emerald-600 bg-emerald-50/90 text-emerald-950 ring-2 ring-emerald-600/30'
-                        : 'border-slate-300 bg-white text-slate-800 hover:bg-slate-50'
-                    }`}
-                  >
-                    <ShieldCheck className={`w-4 h-4 mt-1 shrink-0 ${selectedRole === 'manager' ? 'text-emerald-700' : 'text-slate-500'}`} />
-                    <div>
-                      <div className="text-sm font-black text-slate-900">Register as Manager</div>
-                      <div className="text-xs font-semibold text-slate-600 mt-0.5">Audit reports & administrative control</div>
-                    </div>
-                  </button>
-                </div>
-              </div>
-
               <div>
                 <label className="block text-sm font-black text-slate-900 mb-1.5">
                   Full Name (Jina Kamili) *
@@ -309,7 +265,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   required
                   value={regUsername}
                   onChange={(e) => setRegUsername(e.target.value)}
-                  placeholder="e.g. david.staff or david.manager"
+                  placeholder="e.g. david.staff"
                   className="w-full px-3.5 py-3 text-sm font-bold text-slate-900 bg-white border-2 border-slate-300 rounded-xl focus:outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/20 placeholder:text-slate-400 placeholder:font-normal min-h-[46px] shadow-2xs"
                 />
               </div>
@@ -368,11 +324,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full py-3.5 px-4 text-white text-sm font-black uppercase tracking-wider rounded-xl shadow-md transition-all mt-3 min-h-[48px] disabled:opacity-60 cursor-pointer ${
-                  selectedRole === 'manager'
-                    ? 'bg-emerald-600 hover:bg-emerald-700'
-                    : 'bg-slate-900 hover:bg-slate-800'
-                }`}
+                className="w-full py-3.5 px-4 text-white text-sm font-black uppercase tracking-wider rounded-xl shadow-md transition-all mt-3 min-h-[48px] disabled:opacity-60 cursor-pointer bg-slate-900 hover:bg-slate-800"
               >
                 {isSubmitting ? 'Registering Account...' : 'Register & Save Credentials'}
               </button>

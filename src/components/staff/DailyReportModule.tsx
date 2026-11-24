@@ -39,9 +39,6 @@ import {
   Receipt,
   Scale,
   X,
-  Lock,
-  Unlock,
-  Mail,
   Info,
 } from 'lucide-react';
 import { SystemDateTimeHeader } from '../shared/SystemDateTimeHeader';
@@ -117,7 +114,6 @@ export const DailyReportModule: React.FC<DailyReportModuleProps> = ({
   const [expenseDescription, setExpenseDescription] = useState<string>('');
   const [expenseAmount, setExpenseAmount] = useState<string>('');
   const [isSubmittingExpense, setIsSubmittingExpense] = useState<boolean>(false);
-  const [isManagerExpensesUnlocked, setIsManagerExpensesUnlocked] = useState<boolean>(false);
 
   const loadDayExpenses = (targetDate: string) => {
     const allExp = StorageService.getExpenses(currentUser);
@@ -1269,40 +1265,6 @@ export const DailyReportModule: React.FC<DailyReportModuleProps> = ({
             </div>
 
             <div className="flex items-center gap-2 self-start sm:self-auto">
-              {currentUser?.role === 'manager' && !isManagerExpensesUnlocked && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsManagerExpensesUnlocked(true);
-                    StorageService.addAuditLog(
-                      'MANAGER_REQUESTED_STAFF_EXPENSES',
-                      `Executive Manager requested and unlocked daily expense records for date ${selectedDate}`,
-                      currentUser.username,
-                      'manager'
-                    );
-                    showNotice('success', `Request sent to staff and expense receipts for ${selectedDate} have been unlocked.`);
-                  }}
-                  className="px-3 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-xl transition-colors shadow-sm flex items-center gap-1.5"
-                >
-                  <Mail className="w-3.5 h-3.5" />
-                  <span>Request Expenses from Staff</span>
-                </button>
-              )}
-
-              {currentUser?.role === 'manager' && isManagerExpensesUnlocked && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsManagerExpensesUnlocked(false);
-                    showNotice('info', `Expense breakdown for ${selectedDate} has been returned to staff custody.`);
-                  }}
-                  className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-colors border border-slate-300 flex items-center gap-1.5"
-                >
-                  <Lock className="w-3.5 h-3.5" />
-                  <span>Lock Details</span>
-                </button>
-              )}
-
               <button
                 type="button"
                 onClick={() => setIsExpenseFormOpen(!isExpenseFormOpen)}
@@ -1343,29 +1305,14 @@ export const DailyReportModule: React.FC<DailyReportModuleProps> = ({
 
             {/* Daily Expenses */}
             <div className="p-3 bg-rose-50/60 border border-rose-200 rounded-xl space-y-0.5">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold uppercase text-rose-800 block">
-                  Daily Expenses
-                </span>
-                {currentUser?.role === 'manager' && !isManagerExpensesUnlocked ? (
-                  <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 flex items-center gap-0.5">
-                    <Lock className="w-2.5 h-2.5" />
-                    <span>Staff Custody</span>
-                  </span>
-                ) : (
-                  <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 flex items-center gap-0.5">
-                    <Unlock className="w-2.5 h-2.5" />
-                    <span>Unlocked</span>
-                  </span>
-                )}
-              </div>
+              <span className="text-[10px] font-bold uppercase text-rose-800 block">
+                Daily Expenses
+              </span>
               <div className="text-base sm:text-lg font-bold font-mono text-rose-950">
                 {FinancialService.formatCurrency(dayTotalExpenses)}
               </div>
               <span className="text-[10px] text-rose-700">
-                {currentUser?.role === 'manager' && !isManagerExpensesUnlocked
-                  ? 'Staff Custody'
-                  : `${dayExpenses.length} receipt${dayExpenses.length === 1 ? '' : 's'} on ${selectedDate}`}
+                {`${dayExpenses.length} receipt${dayExpenses.length === 1 ? '' : 's'} on ${selectedDate}`}
               </span>
             </div>
 
@@ -1493,36 +1440,7 @@ export const DailyReportModule: React.FC<DailyReportModuleProps> = ({
               )}
             </div>
 
-            {currentUser?.role === 'manager' && !isManagerExpensesUnlocked ? (
-              <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-                <div className="space-y-0.5">
-                  <span className="font-bold text-slate-900 flex items-center gap-1.5">
-                    <Lock className="w-3.5 h-3.5 text-amber-600" />
-                    <span>Expense Breakdown in Staff Custody</span>
-                  </span>
-                  <p className="text-[11px] text-slate-500">
-                    Visible to you is Store Profit ({FinancialService.formatCurrency(dayStoreProfit)}) and Net Balance ({dayFinancialStatus}). To view itemized receipts and breakdown, request access from staff.
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsManagerExpensesUnlocked(true);
-                    StorageService.addAuditLog(
-                      'MANAGER_REQUESTED_STAFF_EXPENSES',
-                      `Executive Manager requested staff daily expenses for date ${selectedDate}`,
-                      currentUser?.username || 'manager',
-                      'manager'
-                    );
-                    showNotice('success', `Request sent to staff and expense receipts for ${selectedDate} have been unlocked.`);
-                  }}
-                  className="px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl shadow-xs transition-colors whitespace-nowrap flex items-center gap-1 self-start sm:self-auto shrink-0"
-                >
-                  <Mail className="w-3.5 h-3.5" />
-                  <span>Request Expenses from Staff</span>
-                </button>
-              </div>
-            ) : dayExpenses.length === 0 ? (
+            {dayExpenses.length === 0 ? (
               <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center text-xs text-slate-500">
                 No operational expenses recorded for {selectedDate}. Use the "+ Record Daily Expense" button above to log expenses.
               </div>

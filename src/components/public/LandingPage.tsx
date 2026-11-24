@@ -19,7 +19,7 @@ import { HERO_OPERATIONS_IMAGE } from '../../services/storage';
 
 interface LandingPageProps {
   onOpenAuth: (mode?: 'login' | 'register') => void;
-  onEnterPortal: (portal: 'manager' | 'staff') => void;
+  onEnterPortal: (portal: 'staff') => void;
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth, onEnterPortal }) => {
@@ -44,7 +44,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth, onEnterPor
               </h1>
 
               <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl">
-                T20 Server gathers daily report submissions, auto-populating registered products (Name, Price, Quantity & Total Amount), tracking Quantum & Body Analyzer testing tallies, serializing Member Kits, and generating Weekly, Monthly, Quarterly, Semi-Annual, and Annual reports automatically with full manager review workflows.
+                T20 Server gathers daily report submissions, auto-populating registered products (Name, Price, Quantity & Total Amount), tracking Quantum & Body Analyzer testing tallies, serializing Member Kits, and generating Weekly, Monthly, Quarterly, Semi-Annual, and Annual reports automatically.
               </p>
 
               {/* CTAs */}
@@ -52,11 +52,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth, onEnterPor
                 {currentUser ? (
                   <div className="flex flex-wrap items-center gap-3">
                     <button
-                      onClick={() => onEnterPortal(currentUser.role === 'manager' ? 'manager' : 'staff')}
+                      onClick={() => onEnterPortal('staff')}
                       className="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-lg shadow-sm flex items-center gap-2 transition-colors whitespace-nowrap"
                     >
                       <span>
-                        Enter {currentUser.role === 'manager' ? 'Manager Dashboard' : 'Staff Workspace'}
+                        Enter Staff Workspace
                       </span>
                       <ArrowRight className="w-4 h-4" />
                     </button>
@@ -80,7 +80,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth, onEnterPor
                       onClick={() => onOpenAuth('register')}
                       className="px-6 py-3 bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 text-sm font-semibold rounded-lg shadow-sm transition-colors whitespace-nowrap"
                     >
-                      Register (Staff / Manager)
+                      Register Account
                     </button>
                   </>
                 )}
@@ -90,11 +90,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth, onEnterPor
               <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-6 text-xs text-slate-500">
                 <div className="flex items-center gap-1.5">
                   <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  <span>Role-Based Access Control</span>
+                  <span>Secure Account Workspace</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <Lock className="w-4 h-4 text-slate-500" />
-                  <span>Staff & Manager Self-Registration</span>
+                  <span>Instant Self-Registration</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <FileSpreadsheet className="w-4 h-4 text-blue-600" />
@@ -203,10 +203,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth, onEnterPor
                   <CheckCircle className="w-5 h-5" />
                 </div>
                 <h3 className="text-base font-semibold text-slate-900 mb-2">
-                  Staff Review & Direct Submission
+                  Staff Review & Submission
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Staff members review calculated totals before submitting. Upon submission, reports route directly to the Manager Dashboard for oversight.
+                  Review calculated totals, daily store profit, and net expense balance before saving. Submissions automatically update unified period ledgers.
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t border-slate-100 text-xs font-medium text-amber-600">
@@ -232,21 +232,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth, onEnterPor
               </div>
             </div>
 
-            {/* 6. Manager Review & Feedback */}
+            {/* 6. Profit & Expense Reconciliation */}
             <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
               <div>
                 <div className="w-10 h-10 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center mb-4">
                   <BarChart3 className="w-5 h-5" />
                 </div>
                 <h3 className="text-base font-semibold text-slate-900 mb-2">
-                  Executive Review & Audit Feedback
+                  Store Profit & Expense Tracking
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Managers review reports and provide constructive feedback without logging into staff accounts; staff members view feedback directly in their workspace.
+                  Automatically compute daily store profit from accumulated PV, subtract daily expenses, and export print-ready CSV or PDF statements anytime.
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t border-slate-100 text-xs font-medium text-teal-600">
-                Two-Way Managerial Feedback Loop
+                Real-Time Net Profit / Loss Balance
               </div>
             </div>
           </div>
@@ -276,7 +276,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth, onEnterPor
               <div className="mt-6 flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-xs font-medium text-slate-700 bg-slate-100 px-3 py-2 rounded-lg">
                   <CheckCircle className="w-4 h-4 text-emerald-600" />
-                  <span>Instant self-registration for Staff and Managers</span>
+                  <span>Instant self-registration for Operations Staff</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs font-medium text-slate-700 bg-slate-100 px-3 py-2 rounded-lg">
                   <CheckCircle className="w-4 h-4 text-emerald-600" />
@@ -303,18 +303,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth, onEnterPor
                 <div className="text-center text-slate-500 font-bold">↓</div>
 
                 <div className="p-3 bg-slate-800/80 rounded-lg border border-slate-700">
-                  <div className="text-blue-400 font-bold mb-1">02. Staff Review & Submission</div>
+                  <div className="text-blue-400 font-bold mb-1">02. Verification & Submission</div>
                   <div className="text-slate-300">
-                    Grand total verification · Direct submission to Manager Dashboard queue
+                    Grand total verification · Store Profit & Daily Expense reconciliation
                   </div>
                 </div>
 
                 <div className="text-center text-slate-500 font-bold">↓</div>
 
                 <div className="p-3 bg-slate-800/80 rounded-lg border border-slate-700">
-                  <div className="text-purple-400 font-bold mb-1">03. Manager Audit & Real-Time Feedback</div>
+                  <div className="text-purple-400 font-bold mb-1">03. Unified Records & Export</div>
                   <div className="text-slate-300">
-                    Direct review without staff account switching · Remarks & status approvals
+                    Print-ready statements · CSV & PDF reporting archive
                   </div>
                 </div>
 

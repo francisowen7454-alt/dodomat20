@@ -27,7 +27,7 @@ import {
 interface GlobalSearchModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onNavigateToView?: (view: 'landing' | 'staff' | 'manager') => void;
+  onNavigateToView?: (view: 'landing' | 'staff') => void;
 }
 
 export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
@@ -149,10 +149,9 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
     setSelectedReport(report);
   };
 
-  const handleNavigateToWorkspace = (roleTarget?: 'staff' | 'manager') => {
-    const target = roleTarget || (currentUser?.role === 'manager' ? 'manager' : 'staff');
+  const handleNavigateToWorkspace = () => {
     if (onNavigateToView) {
-      onNavigateToView(target);
+      onNavigateToView('staff');
     }
     onClose();
   };
@@ -514,10 +513,10 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
 
                   <div className="pt-2">
                     <button
-                      onClick={() => handleNavigateToWorkspace(currentUser?.role === 'manager' ? 'manager' : 'staff')}
+                      onClick={() => handleNavigateToWorkspace()}
                       className="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 dark:bg-blue-600 dark:hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
                     >
-                      <span>Open in {currentUser?.role === 'manager' ? 'Manager Portal' : 'Staff Workspace'}</span>
+                      <span>Open in Staff Workspace</span>
                       <ExternalLink className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -632,10 +631,10 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
 
                   <div className="pt-2">
                     <button
-                      onClick={() => handleNavigateToWorkspace(currentUser?.role === 'manager' ? 'manager' : 'staff')}
+                      onClick={() => handleNavigateToWorkspace()}
                       className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 shadow-sm cursor-pointer"
                     >
-                      <span>Review in {currentUser?.role === 'manager' ? 'Manager Portal' : 'Staff Workspace'}</span>
+                      <span>Review in Staff Workspace</span>
                       <ExternalLink className="w-3.5 h-3.5" />
                     </button>
                   </div>

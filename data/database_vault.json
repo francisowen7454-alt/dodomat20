@@ -10,7 +10,7 @@
       "isActive": true,
       "emailVerified": true,
       "createdAt": "2026-01-15T08:00:00Z",
-      "lastLoginAt": "2026-11-09T18:56:13.016Z",
+      "lastLoginAt": "2026-11-24T16:08:54.407Z",
       "passwordSalt": "2e073526a4f18692672960387cf42bd1",
       "passwordHash": "14a7b3890e4b566b5640e15cc264677e16918cd2fd01997e1f473f4cc8888c3b97f7e55270e999bea031970cc4eb202e241b48c61421a050a9891abcb24af69f"
     },
@@ -23,7 +23,7 @@
       "isActive": true,
       "emailVerified": true,
       "createdAt": "2026-02-01T09:00:00Z",
-      "lastLoginAt": "2026-11-09T18:56:13.448Z",
+      "lastLoginAt": "2026-11-24T16:08:54.789Z",
       "passwordSalt": "41e960ca0b51027bd9f289bc70850ddf",
       "passwordHash": "d2057bfee0df1dbbbff339021a19e0a98c610114cc28a9e024792fe8b58c07ed64cedaaf77eca4931579386c73027520d045f135ba835c1884be40421d8573ce"
     },
@@ -637,6 +637,45 @@
       "lastLoginAt": "2026-11-09T18:56:13.194Z",
       "passwordSalt": "9cbc857c2eb1e2afa2ac5653c65dee3b",
       "passwordHash": "ce09ba72192f41483a2d8713766e7e63a63d9c5ac0f0268f09d32685374d68c13de0a3df075b5da787595cbe51410ca03feb0c770ae86198069afaed1f8d974f"
+    },
+    {
+      "id": "usr-1795536534240",
+      "fullName": "Executive Manager User",
+      "username": "test.public.mgr.1795536534161",
+      "email": "test.public.mgr.1795536534161@t20.local",
+      "role": "manager",
+      "isActive": true,
+      "emailVerified": true,
+      "createdAt": "2026-11-24T16:08:54.240Z",
+      "lastLoginAt": "2026-11-24T16:08:54.240Z",
+      "passwordSalt": "89b23625ba072b02b3d8f06ac2b3864e",
+      "passwordHash": "f45135fe099af2c6b2b19a58d57292441951d80acb1cdd1d43cf04a888b8d0e8adb85b09b34b82165651b9572506e504d63743c0aee3e964ee2e55c456702dda"
+    },
+    {
+      "id": "usr-1795536534326",
+      "fullName": "Test Staff Member",
+      "username": "test.staff.1795536534243",
+      "email": "test.staff.1795536534243@t20.local",
+      "role": "staff",
+      "isActive": true,
+      "emailVerified": true,
+      "createdAt": "2026-11-24T16:08:54.326Z",
+      "lastLoginAt": "2026-11-24T16:08:54.655Z",
+      "passwordSalt": "d623ae727cc6932473254f3bc60ff58a",
+      "passwordHash": "515730db7e08ad802a4cb0c165c7febfa8b0880865ce1aa596e4633f4536569cddc022b812d7599eef8fbe382eb2f1d80572ff33c39d0b92012a252870f9ddce"
+    },
+    {
+      "id": "usr-1795536534488",
+      "fullName": "Executive Lead",
+      "username": "test.mgr.1795536534328",
+      "email": "test.mgr.1795536534328@t20.local",
+      "role": "manager",
+      "isActive": true,
+      "emailVerified": true,
+      "createdAt": "2026-11-24T16:08:54.489Z",
+      "lastLoginAt": "2026-11-24T16:08:54.570Z",
+      "passwordSalt": "216588b5f9130894de4c1992b9f731ea",
+      "passwordHash": "c233c437240643128d48918502b9c5e8921a94cbd60f2ad3c47753a92bf51c5a4dea240de41d9e3f4b8a038ef7f345dd07704cb94c0323ebf830557559742404"
     }
   ],
   "products": [],
@@ -767,6 +806,15 @@
       "amount": 45000,
       "enteredBy": "neema.staff",
       "createdAt": "2026-11-09T18:56:13.452Z"
+    },
+    {
+      "id": "exp-1795536534793-d8df6566",
+      "expenseDate": "2026-10-22",
+      "category": "Office Expenses",
+      "description": "Office stationery and printer cartridges",
+      "amount": 45000,
+      "enteredBy": "neema.staff",
+      "createdAt": "2026-11-24T16:08:54.794Z"
     }
   ],
   "periodSubmissions": {},
